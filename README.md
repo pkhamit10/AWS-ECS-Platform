@@ -4,6 +4,12 @@ The dev network spans two availability zones. Place the ALB in the public
 subnets, ECS tasks in the private application subnets, and RDS in the isolated
 database subnets. The database subnets have no default internet route.
 
+The ALB security group accepts IPv4 HTTP traffic on port 80 and sends traffic
+only to the ECS security group on port 5000. ECS accepts traffic on port 5000
+only from the ALB and can send outbound IPv4 traffic, including to RDS and via
+the NAT gateway. RDS accepts PostgreSQL traffic on port 5432 only from ECS and
+has no outbound rules.
+
 Both application subnets share one NAT gateway to reduce cost. This incurs NAT
 gateway and data processing charges and is an availability trade-off: if the
 NAT gateway or its availability zone fails, outbound internet access from both
