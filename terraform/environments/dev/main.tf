@@ -11,6 +11,16 @@ module "security" {
   vpc_id = module.networking.vpc_id
 }
 
+module "ecr" {
+  source = "../../modules/ecr"
+
+  name = "${var.project_name}-${var.environment}"
+}
+
+output "repository_url" {
+  value = module.ecr.repository_url
+}
+
 output "vpc_id" {
   value = module.networking.vpc_id
 }
