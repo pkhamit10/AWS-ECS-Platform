@@ -17,6 +17,23 @@ module "ecr" {
   name = "${var.project_name}-${var.environment}"
 }
 
+module "alb" {
+  source = "../../modules/alb"
+
+  name              = "${var.project_name}-${var.environment}"
+  vpc_id            = module.networking.vpc_id
+  public_subnet_ids = module.networking.public_subnet_ids
+  security_group_id = module.security.alb_security_group_id
+}
+
+output "alb_dns_name" {
+  value = module.alb.alb_dns_name
+}
+
+output "target_group_arn" {
+  value = module.alb.target_group_arn
+}
+
 output "repository_url" {
   value = module.ecr.repository_url
 }
